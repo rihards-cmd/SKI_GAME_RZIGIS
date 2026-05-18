@@ -24,6 +24,12 @@ public class GameManager : MonoBehaviour
         FinishGate.FinishRace += OnRaceFinish;
         SlalomFlag.RacePenalty += AddRacePenalty;
     }
+    public void OnDisable()
+    {
+        StartGate.StartRace -= OnRaceStart;
+        FinishGate.FinishRace -= OnRaceFinish;
+        SlalomFlag.RacePenalty -= AddRacePenalty;
+    }
 
     private void Start()
     {
@@ -55,6 +61,8 @@ public class GameManager : MonoBehaviour
 
     void OnRaceFinish()
     {
+        float raceTimeF = (float)raceTime.TotalMilliseconds / 1000f;
+        GameData.Instance.AddTime(raceTimeF);
         Debug.Log("Finished race");
         racing = false;
         if (raceTime < bestTime)

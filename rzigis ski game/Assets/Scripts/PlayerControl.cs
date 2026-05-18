@@ -16,6 +16,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private bool disabledControl = false;
     [SerializeField] private float disableTime = 1;
     private float lastCollisionTime;
+    private Animator anim;
     
     public static Transform player;
 
@@ -25,6 +26,7 @@ public class PlayerControl : MonoBehaviour
         move = InputSystem.actions.FindAction("Player/Move");
         rb = GetComponent<Rigidbody>();
         player = transform;
+        anim = GetComponent<Animator>();
     }
 
     void OnEnable()
@@ -64,5 +66,7 @@ public class PlayerControl : MonoBehaviour
             float speedMult = Mathf.Cos(turnAngle * Mathf.Deg2Rad);
             rb.AddForce(transform.forward * forwardForce * speedMult * Time.fixedDeltaTime);
         }
+        anim.SetBool("grounded", grounded);
+        anim.SetFloat("playerSpeed", rb.linearVelocity.magnitude);
     }
 }
